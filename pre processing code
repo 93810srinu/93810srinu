@@ -1,0 +1,44 @@
+library(dplyr)
+
+
+
+Dataset = read.csv("1- total-deaths-comparison.csv")
+colnames(Dataset)[colnames(Dataset) == "Deaths...Sex..all...Age..all...Variant..estimates"] <- "Deathrate"
+Dataset <- Dataset[c("Entity", "Year", "Deathrate")]
+
+
+#CD = Cleaned Data
+CD <- na.omit(Dataset)
+
+
+#CY = Common Years
+CY <- Reduce(intersect, lapply(split(CD$Year, CD$Entity), unique))
+
+
+#CYD = Common Years Dataset
+CYD <- CD[CD$Year %in% CY, ]
+
+
+#SC = selected countries
+SC <- sample(unique(CYD$Entity), 5)
+print(SC)
+
+
+#SY = selected years
+SY <- sample(unique(CYD$Year), 10)
+print(SY)
+
+
+#FD = Filtered Dataset
+FD <- CYD[CYD$Entity %in% SC & CYD$Year %in% SY, ]
+print(FD)
+
+
+# MD = mean_deathrate_per_country
+#mean_DR = Mean Deathrate
+MD <- FD %>%
+  group_by(Entity) %>%
+  summarise(mean_DR = mean(Deathrate, na.rm = TRUE), .groups = "drop")
+MD$mean_DR <- round(MD$mean_DR, 2)
+print(MD)
+
