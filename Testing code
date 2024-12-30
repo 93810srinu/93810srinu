@@ -1,0 +1,2 @@
+TR <- pairwise.wilcox.test(FD$Deathrate, FD$Year, p.adjust.method = "BH")
+print(TR)
