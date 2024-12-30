@@ -1,0 +1,40 @@
+library(dplyr)
+library(ggplot2)
+
+Dataset <- read.csv("1- total-deaths-comparison.csv")
+colnames(Dataset)[colnames(Dataset) == "Deaths...Sex..all...Age..all...Variant..estimates"] <- "Deathrate"
+Dataset <- Dataset[c("Entity", "Year", "Deathrate")]
+
+CD <- na.omit(Dataset)
+
+CY <- Reduce(intersect, lapply(split(CD$Year, CD$Entity), unique))
+
+CYD <- CD[CD$Year %in% CY, ]
+print(CYD)
+SC <- sample(unique(CYD$Entity), 2)
+print(SC)
+
+SY <- sample(unique(CYD$Year), 2)
+print(SY)
+
+#FD= Filtered Dataset
+FD <- CYD[CYD$Entity %in% SC & CYD$Year %in% SY, ]
+print(FD)
+
+MD <- FD %>%
+  group_by(Entity) %>%
+  summarise(mean_DR = mean(Deathrate, na.rm = TRUE), .groups = "drop")
+MD$mean_DR <- round(MD$mean_DR, 2)
+print(MD)
+
+
+max_deathrate <- max(FD$Deathrate, na.rm = TRUE)
+
+ggplot(FD, aes(x = factor(Year), y = Deathrate)) +
+  geom_boxplot(fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(title = "Boxplot of Deathrate by Year",
+       x = "Year",
+       y = "Deathrate") +
+  scale_y_continuous(breaks = seq(0, max_deathrate, length.out = 8)) + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
