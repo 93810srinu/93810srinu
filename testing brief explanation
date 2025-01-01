@@ -1,0 +1,48 @@
+Pairwise comparisons using Wilcoxon rank sum exact test 
+
+data:  FD$Deathrate and FD$Year 
+
+     1959 1963 1971 1992 1998 1999 2008 2011 2018
+1963 1    -    -    -    -    -    -    -    -   
+1971 1    1    -    -    -    -    -    -    -   
+1992 1    1    1    -    -    -    -    -    -   
+1998 1    1    1    1    -    -    -    -    -   
+1999 1    1    1    1    1    -    -    -    -   
+2008 1    1    1    1    1    1    -    -    -   
+2011 1    1    1    1    1    1    1    -    -   
+2018 1    1    1    1    1    1    1    1    -   
+2019 1    1    1    1    1    1    1    1    1   
+
+P value adjustment method: BH
+
+> print(MD)
+# A tibble: 10 × 2
+   Entity                             mean_DR
+   <chr>                                <dbl>
+ 1 Niue                                  33.5
+ 2 Anguilla                              74.3
+ 3 Gibraltar                            222. 
+ 4 Saint Vincent and the Grenadines     872. 
+ 5 Ireland                            31217. 
+ 6 Togo                               56014. 
+ 7 Ecuador                            71562. 
+ 8 Romania                           234065  
+ 9 Mexico                            584781. 
+10 Nigeria                          1983970
+
+these are the selected countries and R-console output of mean data 
+
+> print(SC)
+ [1] "Anguilla"                         "Romania"                          "Ecuador"                         
+ [4] "Niue"                             "Togo"                             "Saint Vincent and the Grenadines"
+ [7] "Gibraltar"                        "Mexico"                           "Nigeria"                         
+[10] "Ireland"                         
+> 
+> #SY = selected years
+> SY <- sample(unique(CYD$Year), 10)
+> print(SY)
+ [1] 2019 1963 1971 1992 2011 1998 2018 1959 1999 2008
+
+
+these are the selected years 
+
